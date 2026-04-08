@@ -779,7 +779,9 @@ const CreateMonitorPage = () => {
 							name="escalationMinutes"
 							control={control}
 							render={({ field, fieldState }) => {
-								const escalationMinutesValue = Array.isArray(field.value) ? field.value[0] ?? "" : "";
+								const escalationMinutesValue = Array.isArray(field.value)
+									? (field.value[0] ?? "")
+									: "";
 								return (
 									<TextField
 										value={escalationMinutesValue}
@@ -788,8 +790,12 @@ const CreateMonitorPage = () => {
 											field.onChange(value === "" ? [] : [Number(value)]);
 										}}
 										type="number"
-										fieldLabel={t("pages.createMonitor.form.escalation.option.minutes.label")}
-										placeholder={t("pages.createMonitor.form.escalation.option.minutes.placeholder")}
+										fieldLabel={t(
+											"pages.createMonitor.form.escalation.option.minutes.label"
+										)}
+										placeholder={t(
+											"pages.createMonitor.form.escalation.option.minutes.placeholder"
+										)}
 										fullWidth
 										error={!!fieldState.error}
 										helperText={fieldState.error?.message ?? ""}
@@ -817,7 +823,10 @@ const CreateMonitorPage = () => {
 											isOptionEqualToValue={(option, value) => option.id === value.id}
 										/>
 										{selectedEscalationNotifications.length > 0 && (
-											<Stack flex={1} width="100%">
+											<Stack
+												flex={1}
+												width="100%"
+											>
 												{selectedEscalationNotifications.map((notification, index) => (
 													<Stack
 														direction="row"
@@ -825,25 +834,27 @@ const CreateMonitorPage = () => {
 														key={notification.id}
 														width="100%"
 													>
-															<Typography flexGrow={1}>
-																{notification.notificationName}
-															</Typography>
-															<IconButton
-																size="small"
-																onClick={() => {
+														<Typography flexGrow={1}>
+															{notification.notificationName}
+														</Typography>
+														<IconButton
+															size="small"
+															onClick={() => {
 																field.onChange(
 																	(field.value ?? []).filter(
-																				(id: string) => id !== notification.id
-																			)
-																	);
-																}}
-																aria-label="Remove escalation notification"
-															>
-																<Trash2 size={16} />
-															</IconButton>
-															{index < selectedEscalationNotifications.length - 1 && <Divider />}
-														</Stack>
-													))}
+																		(id: string) => id !== notification.id
+																	)
+																);
+															}}
+															aria-label="Remove escalation notification"
+														>
+															<Trash2 size={16} />
+														</IconButton>
+														{index < selectedEscalationNotifications.length - 1 && (
+															<Divider />
+														)}
+													</Stack>
+												))}
 											</Stack>
 										)}
 									</Stack>

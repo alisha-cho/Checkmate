@@ -68,15 +68,18 @@ export const createMonitorBodyValidation = z.object({
 		.refine((values) => values === undefined || new Set(values).size === values.length, {
 			message: "Escalation minutes must be unique",
 		})
-		.refine((values) => {
-			if (!Array.isArray(values)) {
-				return true;
+		.refine(
+			(values) => {
+				if (!Array.isArray(values)) {
+					return true;
+				}
+				const minutes = values as number[];
+				return minutes.every((value, index) => index === 0 || value > minutes[index - 1]!);
+			},
+			{
+				message: "Escalation minutes must be sorted in ascending order",
 			}
-			const minutes = values as number[];
-			return minutes.every((value, index) => index === 0 || value > minutes[index - 1]!);
-		}, {
-			message: "Escalation minutes must be sorted in ascending order",
-		}),
+		),
 	cpuAlertThreshold: z.number().optional(),
 	memoryAlertThreshold: z.number().optional(),
 	diskAlertThreshold: z.number().optional(),
@@ -111,15 +114,18 @@ export const editMonitorBodyValidation = z.object({
 		.refine((values) => values === undefined || new Set(values).size === values.length, {
 			message: "Escalation minutes must be unique",
 		})
-		.refine((values) => {
-			if (!Array.isArray(values)) {
-				return true;
+		.refine(
+			(values) => {
+				if (!Array.isArray(values)) {
+					return true;
+				}
+				const minutes = values as number[];
+				return minutes.every((value, index) => index === 0 || value > minutes[index - 1]!);
+			},
+			{
+				message: "Escalation minutes must be sorted in ascending order",
 			}
-			const minutes = values as number[];
-			return minutes.every((value, index) => index === 0 || value > minutes[index - 1]!);
-		}, {
-			message: "Escalation minutes must be sorted in ascending order",
-		}),
+		),
 	notifications: z.array(z.string()).optional(),
 	secret: z.string().optional(),
 	ignoreTlsErrors: z.boolean().optional(),
@@ -180,15 +186,18 @@ const importedMonitorSchema = z.object({
 		.refine((values) => new Set(values).size === values.length, {
 			message: "Escalation minutes must be unique",
 		})
-		.refine((values) => {
-			if (!Array.isArray(values)) {
-				return true;
+		.refine(
+			(values) => {
+				if (!Array.isArray(values)) {
+					return true;
+				}
+				const minutes = values as number[];
+				return minutes.every((value, index) => index === 0 || value > minutes[index - 1]!);
+			},
+			{
+				message: "Escalation minutes must be sorted in ascending order",
 			}
-			const minutes = values as number[];
-			return minutes.every((value, index) => index === 0 || value > minutes[index - 1]!);
-		}, {
-			message: "Escalation minutes must be sorted in ascending order",
-		}),
+		),
 	uptimePercentage: z.number().optional(),
 	notifications: z.array(z.string()).default([]),
 	escalationNotifications: z.array(z.string()).default([]),

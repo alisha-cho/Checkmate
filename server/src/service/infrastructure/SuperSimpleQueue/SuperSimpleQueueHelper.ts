@@ -160,7 +160,8 @@ export class SuperSimpleQueueHelper implements ISuperSimpleQueueHelper {
 
 				// Step 6. Handle notifications (best effort, continue even in event of failure, don't wait)
 				if (decision.shouldSendNotification) {
-					this.notificationsService.handleNotifications(statusChangeResult.monitor, status, decision)
+					this.notificationsService
+						.handleNotifications(statusChangeResult.monitor, status, decision)
 						.then(async (sent) => {
 							if (
 								sent &&
@@ -474,7 +475,9 @@ export class SuperSimpleQueueHelper implements ISuperSimpleQueueHelper {
 		}
 
 		if (monitor.status === "down" || monitor.status === "breached") {
-			const escalationSchedule = Array.isArray(monitor.escalationMinutes) ? monitor.escalationMinutes.filter((value) => Number.isInteger(value) && value > 0) : [];
+			const escalationSchedule = Array.isArray(monitor.escalationMinutes)
+				? monitor.escalationMinutes.filter((value) => Number.isInteger(value) && value > 0)
+				: [];
 			if (escalationSchedule.length === 0) {
 				return decision;
 			}

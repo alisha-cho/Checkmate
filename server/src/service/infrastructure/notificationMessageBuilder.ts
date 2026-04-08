@@ -93,7 +93,12 @@ export class NotificationMessageBuilder implements INotificationMessageBuilder {
 		}
 	}
 
-	private buildContent(type: NotificationType, monitor: Monitor, monitorStatusResponse: MonitorStatusResponse, decision: MonitorActionDecision): NotificationContent {
+	private buildContent(
+		type: NotificationType,
+		monitor: Monitor,
+		monitorStatusResponse: MonitorStatusResponse,
+		decision: MonitorActionDecision
+	): NotificationContent {
 		switch (type) {
 			case "monitor_down":
 				if (decision.notificationReason === "escalation") {
@@ -147,7 +152,11 @@ export class NotificationMessageBuilder implements INotificationMessageBuilder {
 		};
 	}
 
-	private buildEscalationContent(monitor: Monitor, monitorStatusResponse: MonitorStatusResponse, decision: MonitorActionDecision): NotificationContent {
+	private buildEscalationContent(
+		monitor: Monitor,
+		monitorStatusResponse: MonitorStatusResponse,
+		decision: MonitorActionDecision
+	): NotificationContent {
 		const title = `Incident Escalation: ${monitor.name}`;
 		const summary = `Monitor "${monitor.name}" is still ${monitor.status} after ${decision.escalationThresholdMinutes ?? "some"} minutes.`;
 		const details = [`URL: ${monitor.url}`, `Status: ${monitor.status === "down" ? "Down" : "Breached"}`, `Type: ${monitor.type}`];

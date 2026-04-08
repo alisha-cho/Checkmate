@@ -29,15 +29,20 @@ const baseSchema = z.object({
 		.refine((values) => values === undefined || new Set(values).size === values.length, {
 			message: "Escalation minutes must be unique",
 		})
-		.refine((values) => {
-			if (!Array.isArray(values)) {
-				return true;
+		.refine(
+			(values) => {
+				if (!Array.isArray(values)) {
+					return true;
+				}
+				const minutes = values as number[];
+				return minutes.every(
+					(value, index) => index === 0 || value > minutes[index - 1]!
+				);
+			},
+			{
+				message: "Escalation minutes must be sorted in ascending order",
 			}
-			const minutes = values as number[];
-			return minutes.every((value, index) => index === 0 || value > minutes[index - 1]!);
-		}, {
-			message: "Escalation minutes must be sorted in ascending order",
-		}),
+		),
 	escalationNotifications: z.array(z.string()).optional(),
 	geoCheckInterval: z
 		.number()
